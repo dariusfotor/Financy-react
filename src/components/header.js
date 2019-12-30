@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import "../style/style.css";
 
 export class header extends Component {
@@ -13,13 +13,13 @@ export class header extends Component {
           <nav>
             <ul>
               <li>
+                <Link to="/">Islaidos</Link>
+              </li>
+              <li>
                 <Link to="/controlPanel">Valdymo panele</Link>
               </li>
               <li>
-                <Link>Pajamos</Link>
-              </li>
-              <li>
-                <Link>Islaidos</Link>
+                <Link to="/controlPanel">Pajamos</Link>
               </li>
             </ul>
           </nav>

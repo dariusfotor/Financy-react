@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-
-export class listExpenses extends Component {
-  render() {
-    return <div></div>;
-  }
-}
-
-export default listExpenses;
+const list = {
+  car: [
+    { label: "Kuras" },
+    { label: "Remontas" },
+    { label: "Draudimas" },
+    { label: "Kita" }
+  ]
+};
+export const root = (state = list, action) => {
+  return state;
+};

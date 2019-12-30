@@ -37,6 +37,7 @@ ul li a:hover {
   color: #659dbd;
   background-color: azure;
 }
+/* EXPENSES.JS */
 .main_container {
   width: 80%;
   margin: 0 auto;
@@ -114,8 +115,21 @@ input {
   border-radius: 10px;
   padding: 3px;
 }
-/* CONTROLPANEL */
+/* CONTROLPANEL.JS */
 .list_container {
   background-color: #5d5c61;
   color: azure;
+  text-align: center;
+}
+.food_list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 0 30px;
+}
+.car_list {
+  margin: 10px 0;
+}
+.erase {
+  margin-left: 30px;
 }

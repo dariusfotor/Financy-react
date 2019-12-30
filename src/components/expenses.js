@@ -2,22 +2,28 @@ import React, { Component } from "react";
 import "../style/style.css";
 import Select from "react-select";
 import Header from "./header";
+import { connect } from "react-redux";
+import { testCar } from "../state/actions/actions";
+import { testFlat } from "../state/actions/actions";
+import { testTravel } from "../state/actions/actions";
+import { testFood } from "../state/actions/actions";
 
-export class expenses extends Component {
+class Expenses extends Component {
   constructor() {
     super();
     this.state = {
       car: [
-        { label: "Kuras" },
-        { label: "Remontas" },
-        { label: "Draudimas" },
-        { label: "Kita" }
+        { label: "kura" },
+        { label: "remonta" },
+        { label: "draudima" },
+        { label: "kita" }
       ],
-      flat: [{ label: "Mokesciai" }, { label: "Remontas" }, { label: "Kita" }],
+      flat: [{ label: "mokescius" }, { label: "remonta" }, { label: "kita" }],
       car_expenses: [],
       flat_expenses: [],
       travels_expenses: [],
       food_expenses: [],
+      total_sum: "",
       selected_car: "",
       selected_flat: "",
       value_car: "",
@@ -55,9 +61,16 @@ export class expenses extends Component {
   };
 
   // Buttons submit
+  // CARS
   submit_car_exp = () => {
     const id_date = new Date().valueOf();
-    const date = Date().toLocaleString();
+    const date = new Date().toLocaleString();
+    this.props.testCar({
+      id: id_date,
+      time: date,
+      name: this.state.selected_car,
+      value: +this.state.value_car
+    });
     this.setState({
       car_expenses: [
         ...this.state.car_expenses,
@@ -76,9 +89,16 @@ export class expenses extends Component {
       this.setState({ btn_pressed_car: false });
     }, 5000);
   };
+  // FLAT
   submit_flat_exp = () => {
     const id_date = new Date().valueOf();
-    const date = Date().toLocaleString();
+    const date = new Date().toLocaleString();
+    this.props.testFlat({
+      id: id_date,
+      time: date,
+      name: this.state.selected_flat,
+      value: +this.state.value_flat
+    });
     this.setState({
       flat_expenses: [
         ...this.state.flat_expenses,
@@ -98,9 +118,16 @@ export class expenses extends Component {
       this.setState({ btn_pressed_flat: false });
     }, 5000);
   };
+  // TRAVELS
   submit_travel_exp = () => {
     const id_date = new Date().valueOf();
-    const date = Date().toLocaleString();
+    const date = new Date().toLocaleString();
+    this.props.testTravel({
+      id: id_date,
+      time: date,
+      name: this.state.value_country,
+      value: +this.state.value_travel
+    });
     this.setState({
       travels_expenses: [
         ...this.state.travels_expenses,
@@ -119,9 +146,15 @@ export class expenses extends Component {
       this.setState({ btn_pressed_travels: false });
     }, 5000);
   };
+  // FOOD
   submit_food_exp = () => {
     const id_date = new Date().valueOf();
-    const date = Date().toLocaleString();
+    const date = new Date().toLocaleString();
+    this.props.testFood({
+      id: id_date,
+      time: date,
+      value: +this.state.value_food
+    });
     this.setState({
       food_expenses: [
         ...this.state.food_expenses,
@@ -134,6 +167,10 @@ export class expenses extends Component {
       this.setState({ btn_pressed_food: false });
     }, 5000);
   };
+  // TOTAL SUM
+  total_sum_exp = () => {
+    const car_expenses = this.state.car_expenses;
+  };
 
   render() {
     var car = this.state.car;
@@ -142,13 +179,7 @@ export class expenses extends Component {
     const pressed_flat = this.state.btn_pressed_flat;
     const pressed_travels = this.state.btn_pressed_travels;
     const pressed_food = this.state.btn_pressed_food;
-    // console.log(this.state.value_car);
-    // console.log(this.state.selected_car);
     console.log(this.state.car_expenses);
-    console.log(this.state.flat_expenses);
-    console.log(this.state.travels_expenses);
-    // console.log(this.state.food_expenses);
-
     return (
       <div>
         <Header />
@@ -259,12 +290,20 @@ export class expenses extends Component {
               {pressed_food ? "Maisto islaidos itrauktos" : null}
             </div>
           </div>
-
-          <div className="expenses_for_things"></div>
         </div>
       </div>
     );
   }
 }
 
-export default expenses;
+const mapStateToProps = state => {
+  return {
+    car_expenses: state.car_expenses
+  };
+};
+export default connect(mapStateToProps, {
+  testCar,
+  testFlat,
+  testTravel,
+  testFood
+})(Expenses);
