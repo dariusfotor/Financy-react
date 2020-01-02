@@ -2,11 +2,24 @@ import React, { Component } from "react";
 import "../style/style.css";
 import Select from "react-select";
 import Header from "./header";
+import * as firebase from "firebase";
 import { connect } from "react-redux";
 import { testCar } from "../state/actions/actions";
 import { testFlat } from "../state/actions/actions";
 import { testTravel } from "../state/actions/actions";
 import { testFood } from "../state/actions/actions";
+
+var firebaseConfig = {
+  apiKey: "AIzaSyC6Gr8gECpNSQ_uRU8Z-rWlQo5HxKqOcew",
+  authDomain: "react-db-1f28d.firebaseapp.com",
+  databaseURL: "https://react-db-1f28d.firebaseio.com",
+  projectId: "react-db-1f28d",
+  storageBucket: "react-db-1f28d.appspot.com",
+  messagingSenderId: "39925836076",
+  appId: "1:39925836076:web:1ef912de8c1f34a8b8a489"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 class Expenses extends Component {
   constructor() {
@@ -85,6 +98,7 @@ class Expenses extends Component {
       selected_car: "",
       btn_pressed_car: true
     });
+
     setTimeout(() => {
       this.setState({ btn_pressed_car: false });
     }, 5000);
@@ -114,6 +128,7 @@ class Expenses extends Component {
       selected_flat: "",
       btn_pressed_flat: true
     });
+
     setTimeout(() => {
       this.setState({ btn_pressed_flat: false });
     }, 5000);
@@ -142,6 +157,7 @@ class Expenses extends Component {
       value_country: "",
       btn_pressed_travels: true
     });
+
     setTimeout(() => {
       this.setState({ btn_pressed_travels: false });
     }, 5000);
@@ -163,13 +179,10 @@ class Expenses extends Component {
       value_food: "",
       btn_pressed_food: true
     });
+
     setTimeout(() => {
       this.setState({ btn_pressed_food: false });
     }, 5000);
-  };
-  // TOTAL SUM
-  total_sum_exp = () => {
-    const car_expenses = this.state.car_expenses;
   };
 
   render() {

@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./header";
 import "../style/style.css";
+import * as firebase from "firebase";
 import { connect } from "react-redux";
 import {
   deleteCar,
@@ -9,7 +10,52 @@ import {
   deleteFood
 } from "../state/actions/actions";
 
+var firebaseConfig = {
+  apiKey: "AIzaSyC6Gr8gECpNSQ_uRU8Z-rWlQo5HxKqOcew",
+  authDomain: "react-db-1f28d.firebaseapp.com",
+  databaseURL: "https://react-db-1f28d.firebaseio.com",
+  projectId: "react-db-1f28d",
+  storageBucket: "react-db-1f28d.appspot.com",
+  messagingSenderId: "39925836076",
+  appId: "1:39925836076:web:1ef912de8c1f34a8b8a489"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 class ControlPanel extends React.Component {
+  componentDidUpdate() {
+    const car = firebase
+      .database()
+      .ref()
+      .child("Car_expenses");
+    car.push({
+      car: this.props.car_expenses
+    });
+
+    const flat = firebase
+      .database()
+      .ref()
+      .child("Flat_expenses");
+    flat.push({
+      flat: this.props.flat_expenses
+    });
+    const travel = firebase
+      .database()
+      .ref()
+      .child("Travel_expenses");
+    travel.push({
+      travel: this.props.travel_expenses
+    });
+
+    const food = firebase
+      .database()
+      .ref()
+      .child("Food_expenses");
+    food.push({
+      food: this.props.food_expenses
+    });
+  }
+
   deleteCar(id) {
     this.props.deleteCar(id);
   }
