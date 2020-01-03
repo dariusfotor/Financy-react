@@ -56,7 +56,6 @@ ul li a:hover {
 }
 .travel_expenses {
   margin: 20px;
-  height: 130px;
 }
 .flat_input,
 .car_input,
@@ -65,10 +64,15 @@ ul li a:hover {
   margin-top: 15px;
   justify-content: center;
 }
+.calendar {
+  margin: auto 20px;
+}
+.calendarTravel {
+  margin-left: 20px;
+}
 .input_label {
   display: flex;
   justify-content: center;
-  margin: 0 15px;
 }
 label {
   color: azure;
@@ -76,13 +80,14 @@ label {
 }
 input {
   text-align: center;
-  width: 50px;
+  width: 90px;
   font-size: 15px;
   border-radius: 5px;
 }
 .country_container {
   display: flex;
   justify-content: center;
+  margin: 15px 0;
 }
 .travel_container {
   display: flex;
@@ -91,13 +96,12 @@ input {
 }
 .country_input {
   width: 100px;
-  margin-left: 30px;
 }
-.travel_input {
-  margin-left: 10px;
+label {
+  margin: auto 10px;
+  font-size: 22px;
 }
 .submit_btn {
-  margin-left: 20px;
   font-size: 18px;
   border-radius: 5px;
 }
@@ -127,9 +131,16 @@ input {
   justify-content: space-evenly;
   margin: 0 30px;
 }
-.car_list {
-  margin: 10px 0;
+.listTable {
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  width: 100%;
+  padding: 5px;
+  border-left: none;
+  border-right: none;
 }
 .erase {
-  margin-left: 30px;
+  margin: 5px 0;
 }

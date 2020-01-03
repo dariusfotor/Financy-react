@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../style/style.css";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Header from "./header";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
@@ -39,11 +41,16 @@ class Expenses extends Component {
       total_sum: "",
       selected_car: "",
       selected_flat: "",
+      selected_date_car: new Date(),
+      selected_date_flat: new Date(),
+      selected_date_travel: new Date(),
+      selected_date_food: new Date(),
       value_car: "",
       value_flat: "",
       value_country: "",
       value_travel: "",
       value_food: "",
+      value_food_input: "",
       btn_pressed_car: false,
       btn_pressed_flat: false,
       btn_pressed_travels: false,
@@ -57,8 +64,17 @@ class Expenses extends Component {
   selecteCar = selected_car => {
     this.setState({ selected_car });
   };
+  dateCar = selected_date_car => {
+    this.setState({ selected_date_car });
+  };
   flatChange = event => {
     this.setState({ value_flat: event.target.value });
+  };
+  selecteFlat = selected_flat => {
+    this.setState({ selected_flat });
+  };
+  dateFlat = selected_date_flat => {
+    this.setState({ selected_date_flat });
   };
   countryChange = event => {
     this.setState({ value_country: event.target.value });
@@ -66,38 +82,60 @@ class Expenses extends Component {
   travelChange = event => {
     this.setState({ value_travel: event.target.value });
   };
+  dateTravel = selected_date_travel => {
+    this.setState({ selected_date_travel });
+  };
   foodChange = event => {
     this.setState({ value_food: event.target.value });
   };
-  selecteFlat = selected_flat => {
-    this.setState({ selected_flat });
+  foodInput = event => {
+    this.setState({
+      value_food_input: event.target.value
+    });
+  };
+  dateFood = selected_date_food => {
+    this.setState({ selected_date_food });
   };
 
   // Buttons submit
   // CARS
   submit_car_exp = () => {
     const id_date = new Date().valueOf();
-    const date = new Date().toLocaleString();
-    this.props.testCar({
-      id: id_date,
-      time: date,
-      name: this.state.selected_car,
-      value: +this.state.value_car
-    });
-    this.setState({
-      car_expenses: [
-        ...this.state.car_expenses,
-        {
-          id: id_date,
-          time: date,
-          name: this.state.selected_car,
-          value: +this.state.value_car
-        }
-      ],
-      value_car: "",
-      selected_car: "",
-      btn_pressed_car: true
-    });
+    const car = firebase
+      .database()
+      .ref()
+      .child("Car_expenses");
+    if (this.state.value_car !== "" && this.state.selected_car !== "") {
+      this.setState({
+        car_expenses: [
+          ...this.state.car_expenses,
+          {
+            id: id_date,
+            time: this.state.selected_date_car.toDateString(),
+            name: this.state.selected_car,
+            value: +this.state.value_car
+          }
+        ],
+        value_car: "",
+        selected_car: "",
+        selected_date_car: new Date(),
+        btn_pressed_car: true
+      });
+      this.props.testCar({
+        id: id_date,
+        time: this.state.selected_date_car.toDateString(),
+        name: this.state.selected_car,
+        value: +this.state.value_car
+      });
+      car.push({
+        id: id_date,
+        time: this.state.selected_date_car.toDateString(),
+        name: this.state.selected_car,
+        value: +this.state.value_car
+      });
+    } else {
+      alert("Uzpildykite laukelius");
+    }
 
     setTimeout(() => {
       this.setState({ btn_pressed_car: false });
@@ -106,29 +144,32 @@ class Expenses extends Component {
   // FLAT
   submit_flat_exp = () => {
     const id_date = new Date().valueOf();
-    const date = new Date().toLocaleString();
-    this.props.testFlat({
-      id: id_date,
-      time: date,
-      name: this.state.selected_flat,
-      value: +this.state.value_flat
-    });
-    this.setState({
-      flat_expenses: [
-        ...this.state.flat_expenses,
+    if (this.state.value_flat !== "" && this.state.selected_flat !== "") {
+      this.setState({
+        flat_expenses: [
+          ...this.state.flat_expenses,
 
-        {
-          id: id_date,
-          time: date,
-          name: this.state.selected_flat,
-          value: +this.state.value_flat
-        }
-      ],
-      value_flat: "",
-      selected_flat: "",
-      btn_pressed_flat: true
-    });
-
+          {
+            id: id_date,
+            time: this.state.selected_date_flat.toDateString(),
+            name: this.state.selected_flat,
+            value: +this.state.value_flat
+          }
+        ],
+        value_flat: "",
+        selected_flat: "",
+        selected_date_flat: new Date(),
+        btn_pressed_flat: true
+      });
+      this.props.testFlat({
+        id: id_date,
+        time: this.state.selected_date_flat.toDateString(),
+        name: this.state.selected_flat,
+        value: +this.state.value_flat
+      });
+    } else {
+      alert("Uzpildykite laukelius");
+    }
     setTimeout(() => {
       this.setState({ btn_pressed_flat: false });
     }, 5000);
@@ -136,27 +177,31 @@ class Expenses extends Component {
   // TRAVELS
   submit_travel_exp = () => {
     const id_date = new Date().valueOf();
-    const date = new Date().toLocaleString();
-    this.props.testTravel({
-      id: id_date,
-      time: date,
-      name: this.state.value_country,
-      value: +this.state.value_travel
-    });
-    this.setState({
-      travels_expenses: [
-        ...this.state.travels_expenses,
-        {
-          id: id_date,
-          time: date,
-          name: this.state.value_country,
-          value: +this.state.value_travel
-        }
-      ],
-      value_travel: "",
-      value_country: "",
-      btn_pressed_travels: true
-    });
+    if (this.state.value_country !== "" && this.state.value_travel !== "") {
+      this.setState({
+        travels_expenses: [
+          ...this.state.travels_expenses,
+          {
+            id: id_date,
+            time: this.state.selected_date_travel.toDateString(),
+            name: this.state.value_country,
+            value: +this.state.value_travel
+          }
+        ],
+        value_travel: "",
+        value_country: "",
+        selected_date_travel: new Date(),
+        btn_pressed_travels: true
+      });
+      this.props.testTravel({
+        id: id_date,
+        time: this.state.selected_date_travel.toDateString(),
+        name: this.state.value_country,
+        value: +this.state.value_travel
+      });
+    } else {
+      alert("Uzpildykite laukelius");
+    }
 
     setTimeout(() => {
       this.setState({ btn_pressed_travels: false });
@@ -165,20 +210,31 @@ class Expenses extends Component {
   // FOOD
   submit_food_exp = () => {
     const id_date = new Date().valueOf();
-    const date = new Date().toLocaleString();
-    this.props.testFood({
-      id: id_date,
-      time: date,
-      value: +this.state.value_food
-    });
-    this.setState({
-      food_expenses: [
-        ...this.state.food_expenses,
-        { id: id_date, time: date, value: +this.state.value_food }
-      ],
-      value_food: "",
-      btn_pressed_food: true
-    });
+    if (this.state.value_food_input !== "" && this.state.value_food !== "") {
+      this.setState({
+        food_expenses: [
+          ...this.state.food_expenses,
+          {
+            id: id_date,
+            time: this.state.selected_date_food.toDateString(),
+            name: this.state.value_food_input,
+            value: +this.state.value_food
+          }
+        ],
+        value_food: "",
+        selected_date_food: new Date(),
+        value_food_input: "",
+        btn_pressed_food: true
+      });
+      this.props.testFood({
+        id: id_date,
+        time: this.state.selected_date_food.toDateString(),
+        name: this.state.value_food_input,
+        value: +this.state.value_food
+      });
+    } else {
+      alert("Uzpildykite laukelius");
+    }
 
     setTimeout(() => {
       this.setState({ btn_pressed_food: false });
@@ -192,18 +248,19 @@ class Expenses extends Component {
     const pressed_flat = this.state.btn_pressed_flat;
     const pressed_travels = this.state.btn_pressed_travels;
     const pressed_food = this.state.btn_pressed_food;
-    console.log(this.state.car_expenses);
     return (
       <div>
         <Header />
         <div className="main_container">
           <div className="car_expenses">
             <div className="input_label">
-              <label>Ivesti masinos islaidas</label>
+              <h1>Ivesti masinos islaidas</h1>
             </div>
             <div className="car_input">
+              <label>Kaina</label>
               <input
                 type="text"
+                placeholder="pvz 30"
                 value={this.state.value_car}
                 onChange={this.carChange}
               ></input>
@@ -215,6 +272,14 @@ class Expenses extends Component {
                   placeholder="Pasirinkite islaidas uz.."
                 />
               </div>
+              <div className="calendar">
+                <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={this.state.selected_date_car}
+                  onChange={this.dateCar}
+                />
+              </div>
+
               <button className="submit_btn" onClick={this.submit_car_exp}>
                 Prideti islaidas
               </button>
@@ -227,11 +292,13 @@ class Expenses extends Component {
           {/* Buto islaidos */}
           <div className="flat_expenses">
             <div className="input_label">
-              <label>Ivesti buto islaidas</label>
+              <h1>Ivesti buto islaidas</h1>
             </div>
             <div className="flat_input">
+              <label>Kaina</label>
               <input
                 type="text"
+                placeholder="pvz 20"
                 value={this.state.value_flat}
                 onChange={this.flatChange}
               ></input>
@@ -241,6 +308,13 @@ class Expenses extends Component {
                   onChange={this.selecteFlat}
                   options={flat}
                   placeholder="Pasirinkite islaidas uz.."
+                />
+              </div>
+              <div className="calendar">
+                <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={this.state.selected_date_flat}
+                  onChange={this.dateFlat}
                 />
               </div>
               <button className="submit_btn" onClick={this.submit_flat_exp}>
@@ -254,6 +328,9 @@ class Expenses extends Component {
 
           {/* Kelioniu islaidos  */}
           <div className="travel_expenses">
+            <div className="input_label">
+              <h1>Ivesti keliones islaidas</h1>
+            </div>
             <div className="country_container">
               <label>Keliones tikslas</label>
               <input
@@ -264,14 +341,22 @@ class Expenses extends Component {
               ></input>
             </div>
             <div className="travel_container">
-              <label>Ivesti keliones islaidas</label>
+              <label>Kaina</label>
               <input
                 className="travel_input"
                 type="text"
                 value={this.state.value_travel}
                 onChange={this.travelChange}
               ></input>
+              <div className="calendarTravel">
+                <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={this.state.selected_date_travel}
+                  onChange={this.dateTravel}
+                />
+              </div>
             </div>
+
             <button
               className="submit_trave_btn"
               onClick={this.submit_travel_exp}
@@ -287,14 +372,31 @@ class Expenses extends Component {
           {/* Maisto islaidos  */}
           <div className="food_expenses">
             <div className="input_label">
-              <label>Ivesti maisto islaidas</label>
+              <h1>Ivesti maisto islaidas</h1>
             </div>
             <div className="food_input">
+              <label>Ka skanaus pirkote</label>
+              <input
+                className="country_input"
+                type="text"
+                value={this.state.value_food_input}
+                onChange={this.foodInput}
+              ></input>
+            </div>
+            <div className="food_input">
+              <label>Kaina</label>
               <input
                 type="text"
                 value={this.state.value_food}
                 onChange={this.foodChange}
               ></input>
+              <div className="calendar">
+                <DatePicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={this.state.selected_date_food}
+                  onChange={this.dateFood}
+                />
+              </div>
               <button className="submit_btn" onClick={this.submit_food_exp}>
                 Prideti islaidas
               </button>
