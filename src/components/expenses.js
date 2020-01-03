@@ -59,7 +59,7 @@ class Expenses extends Component {
   }
 
   carChange = event => {
-    this.setState({ value_car: event.target.value });
+    this.setState({ value_car: event.target.value.replace(/[^0-9.]/g, "") });
   };
   selecteCar = selected_car => {
     this.setState({ selected_car });
@@ -68,7 +68,7 @@ class Expenses extends Component {
     this.setState({ selected_date_car });
   };
   flatChange = event => {
-    this.setState({ value_flat: event.target.value });
+    this.setState({ value_flat: event.target.value.replace(/[^0-9.]/g, "") });
   };
   selecteFlat = selected_flat => {
     this.setState({ selected_flat });
@@ -80,13 +80,13 @@ class Expenses extends Component {
     this.setState({ value_country: event.target.value });
   };
   travelChange = event => {
-    this.setState({ value_travel: event.target.value });
+    this.setState({ value_travel: event.target.value.replace(/[^0-9.]/g, "") });
   };
   dateTravel = selected_date_travel => {
     this.setState({ selected_date_travel });
   };
   foodChange = event => {
-    this.setState({ value_food: event.target.value });
+    this.setState({ value_food: event.target.value.replace(/[^0-9.]/g, "") });
   };
   foodInput = event => {
     this.setState({
@@ -136,7 +136,6 @@ class Expenses extends Component {
     } else {
       alert("Uzpildykite laukelius");
     }
-
     setTimeout(() => {
       this.setState({ btn_pressed_car: false });
     }, 5000);
@@ -148,7 +147,6 @@ class Expenses extends Component {
       this.setState({
         flat_expenses: [
           ...this.state.flat_expenses,
-
           {
             id: id_date,
             time: this.state.selected_date_flat.toDateString(),
@@ -202,7 +200,6 @@ class Expenses extends Component {
     } else {
       alert("Uzpildykite laukelius");
     }
-
     setTimeout(() => {
       this.setState({ btn_pressed_travels: false });
     }, 5000);
@@ -235,7 +232,6 @@ class Expenses extends Component {
     } else {
       alert("Uzpildykite laukelius");
     }
-
     setTimeout(() => {
       this.setState({ btn_pressed_food: false });
     }, 5000);
@@ -257,7 +253,7 @@ class Expenses extends Component {
               <h1>Ivesti masinos islaidas</h1>
             </div>
             <div className="car_input">
-              <label>Kaina</label>
+              <label>Kaina, Eur</label>
               <input
                 type="text"
                 placeholder="pvz 30"
@@ -295,7 +291,7 @@ class Expenses extends Component {
               <h1>Ivesti buto islaidas</h1>
             </div>
             <div className="flat_input">
-              <label>Kaina</label>
+              <label>Kaina, Eur</label>
               <input
                 type="text"
                 placeholder="pvz 20"
@@ -341,7 +337,7 @@ class Expenses extends Component {
               ></input>
             </div>
             <div className="travel_container">
-              <label>Kaina</label>
+              <label>Kaina, Eur</label>
               <input
                 className="travel_input"
                 type="text"
@@ -384,7 +380,7 @@ class Expenses extends Component {
               ></input>
             </div>
             <div className="food_input">
-              <label>Kaina</label>
+              <label>Kaina, Eur</label>
               <input
                 type="text"
                 value={this.state.value_food}

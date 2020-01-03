@@ -44,6 +44,9 @@ ul li a:hover {
   padding: 20px;
   background-color: #5d5c61;
 }
+h1 {
+  color: #92caeb;
+}
 .select {
   width: 300px;
   margin-left: 20px;
@@ -104,13 +107,24 @@ label {
 .submit_btn {
   font-size: 18px;
   border-radius: 5px;
+  padding: 5px;
+  transition: 0.3s ease-in;
+}
+.submit_btn:hover {
+  color: azure;
+  background-color: #659dbd;
 }
 .submit_trave_btn {
   border-radius: 5px;
   display: block;
-  width: 130px;
-  margin: 10px auto 0px auto;
+  margin: 15px auto 0px auto;
   font-size: 18px;
+  padding: 5px;
+  transition: 0.3s ease-in;
+}
+.submit_trave_btn:hover {
+  color: azure;
+  background-color: #659dbd;
 }
 .btn_pressed {
   text-align: center;

@@ -93,10 +93,8 @@ class ControlPanel extends React.Component {
       );
     });
   }
-
   render() {
     console.log(this.props.car_expenses);
-
     return (
       <div>
         <Header />
